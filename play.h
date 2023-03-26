@@ -62,6 +62,29 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                 cnt = 0;
             }
 
+            if (toupper(key)== 'H')
+            {
+                unSelect(n, m, ate, selected);
+                for (int i = 1; i <= n; i++)
+                    for (int j = 1; j <= m; j++)
+                        for (int k = 1; k <= n; k++)
+                            for (int l = 1; l <= m; l++)
+                                if (!ate[i][j] && !ate[k][l]) // Nếu 2 ô chưa đi
+                                    if (finalCheck(i, j, k, l, n, m, 0, C, view, pic, ate, movingOn, selected, cpy))
+                                    {
+                                        setHint(i,j,view);
+                                        setHint(k,l,view);
+                                        printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+                                        Sleep(300);
+
+                                        movingOn[y][x] = true;
+                                        printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+                                        movingOn[y][x] = false;
+
+                                        return;
+                                    }
+            }
+
             if (key != 13)
             {
                 memset(movingOn, false, sizeof(movingOn));
@@ -133,6 +156,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
 }
 
 void updateFile(Player player);
+void choiceLevel(Player player);
 
 void process(int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200],Player &player)
 {
@@ -160,6 +184,7 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
     system("cls");
     player.level ++;
     updateFile(player);
+    choiceLevel(player);
 }
 
 void updateFile(Player player)

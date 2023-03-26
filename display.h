@@ -8,7 +8,7 @@ void doTab(int cnt)
 
 void printBoard(int n, int m, int type, char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
 {
-    // Note: & là viền ngoài map, $ là đã bị ăn, @ là phần trong của ô, + là giao điểm
+    // Note: & là viền ngoài map, $ là đã bị ăn, @ là phần trong của ô, + là giao điểm, % là gợi ý
 
     // system("cls");
     gotoxy(0,(20-n)/2-4); // Them hang nay de no ko bi giat
@@ -25,6 +25,14 @@ void printBoard(int n, int m, int type, char view[200][200], char pic[200][200],
             if (type == 2)
                 TextColor(6);
 
+            if(view[i][j]=='%')
+            {
+                TextColor(2);
+                cout << (char)177;
+                TextColor(7);
+                view[i][j] = '@';
+                continue;
+            }
             if (view[i][j] == '^' || view[i][j] == '>' || view[i][j] == 'x')
             {
                 TextColor(9);

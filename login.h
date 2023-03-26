@@ -8,12 +8,61 @@ void printLogin()
     //Doc thong tin tu file
     Player player,tmp;
     player.maxScore = player.level = -1;
-    cout <<  "dang nhap:\n";
+    cout <<  "Type your account information to login:\n";
     bool sucess = false;
+
     cout <<  "Username: ";
     gets(player.username);
+
     cout <<  "Password: ";
-    gets(player.password); 
+    char ch;
+    string pass = "";
+    int x = 1;
+    while((ch = _getch()) != 13)
+    {
+        pass += ch;
+        cout <<  '*';
+    }
+    strcpy(player.password,pass.c_str());
+
+    gotoxy(0,4);
+    cout <<  "Press [" << char(176) << "S" << char(176) << "] to show password, or [ H ] to hide";
+
+    while(1)
+    {
+        if (kbhit()) // Kiểm tra xem có bấm phím kg
+        {
+            gotoxy(0,4);
+
+            char key = getch(); // Lấy ký tự người dùng vừa bấm
+
+            if (toupper(key)== 'A'||toupper(key)== 'D'||key==75||key==77) // Di chuyển trái
+            {
+                ++x;
+            }
+            
+
+            if(key==13||toupper(key)=='S'||toupper(key)=='H')
+            {
+                if(x&1||toupper(key)=='S')
+                {
+                    gotoxy(0, 2);
+                    cout <<  "Password: " << pass;
+                }
+                gotoxy(0, 4);
+                cout <<  endl;
+                break;
+            }
+
+            if(x&1)
+                cout <<  "Press [" << char(176) << "S" << char(176) << "] to show password, or [ H ] to hide";
+            else
+                cout <<  "Press [ S ] to show password, or [" << char(176) << "H" << char(176) << "] to hide";
+            cout <<  endl;
+        }
+
+    }
+
     ifstream fin;
     fin.open("account\\account.dat", ios::binary);
     while(!fin.eof())
@@ -26,6 +75,7 @@ void printLogin()
             player.level = tmp.level;
             player.maxScore = tmp.maxScore;
             cout <<  "Dang nhap thanh cong!";
+            Sleep(2000);
             sucess = true;
             break;
         }   
@@ -34,6 +84,8 @@ void printLogin()
     if(!sucess)
     {
         cout << "Thong tin khong hop le!";
+        Sleep(2000);
+        cin >> ch; // Nếu user ngứa tay bấm lung tung sẽ k bị sai
         printLogin();
     }
     else

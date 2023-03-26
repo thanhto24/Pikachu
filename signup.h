@@ -32,15 +32,20 @@ void printSignUp()
     char ch;
     dangky.maxScore = -1;
     dangky.level = -1;
-    while(1)
+    cout <<  "Type your account information to sign up:\n";
+
+    cout <<  "Username: ";
+    gets(dangky.username);
+    if(!neverExist(dangky.username))
     {
-        gotoxy(0,0);
-        cout <<  "Username: ";
-        gets(dangky.username);
-        if(neverExist(dangky.username))
-            break;
-        cout <<  "This username was existed!";
+        TextColor(4);
+        cout <<  "This username was existed! Try another\n";
+        Sleep(1500);
+        TextColor(7);
+        printSignUp();
+        return;
     }
+        
     cout <<  "\nPassword: ";
 
     while((ch = _getch()) != 13)
@@ -52,14 +57,14 @@ void printSignUp()
 
     int x = 1;
 
-    gotoxy(0,4);
+    gotoxy(0,5);
     cout <<  "Press [" << char(176) << "S" << char(176) << "] to show password, or [ H ] to hide";
 
     while(1)
     {
         if (kbhit()) // Kiểm tra xem có bấm phím kg
         {
-            gotoxy(0,4);
+            gotoxy(0,5);
 
             char key = getch(); // Lấy ký tự người dùng vừa bấm
 
@@ -73,10 +78,10 @@ void printSignUp()
             {
                 if(x&1||toupper(key)=='S')
                 {
-                    gotoxy(0, 2);
+                    gotoxy(0, 3);
                     cout <<  "Password: " << pass;
                 }
-                gotoxy(0, 4);
+                gotoxy(0, 5);
                 cout <<  endl;
                 break;
             }

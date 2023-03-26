@@ -23,6 +23,18 @@ void setAte(int y, int x, char C[200][200], char view[200][200], bool ate[200][2
         }
 }
 
+void setHint(int y, int x,char view[200][200])
+{
+    x = (x - 1) * (wid - 1) + 2;
+    y = (y - 1) * (hei - 1) + 2;
+    for (int i = y; i < y + hei - 2; i++)
+        for (int j = x; j < x + wid - 2; j++)
+        {
+            if(view[i][j]=='@')
+                view[i][j] = '%';
+        }
+}
+
 void updateView(int n, int m, char C[200][200], char view[200][200])
 {
     for (int i = hei / 2 + 1; i <= n * hei - (n - 2); i += hei - 1)

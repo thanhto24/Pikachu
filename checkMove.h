@@ -8,7 +8,7 @@ bool cantMove(int n, int m, char C[200][200], char view[200][200], char pic[200]
     {
         for (int j = 1; j <= m; j++)
         {
-            for (int k = i; k <= n; k++)
+            for (int k = 1; k <= n; k++)
             {
                 for (int l = 1; l <= m; l++)
                 {

@@ -1,3 +1,4 @@
+#pragma once
 #include "header.h"
 #include "init.h"
 #include "makePicture.h"
@@ -8,6 +9,7 @@
 #include "slide.h"
 #include "play.h"
 #include "player.h"
+#include "menu.h"
 
 void makeLevel(int n, int m,Player player)
 {
@@ -25,22 +27,25 @@ void choiceLevel(Player player)
 {
     system("cls");
 
-    string levelName[5];
+    string levelName[6];
 
     levelName[0] = "    EASY MODE";
     levelName[1] = "    NORMAL MODE";
     levelName[2] = "    MEDIUM MODE";
     levelName[3] = "    HARD MODE";
     levelName[4] = "    CUSTOM MODE";
+    levelName[5] = "    BACK TO MENU";
 
     int x = 0;
 
     levelName[x][0] = '>';
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 6; i++)
     {
-        if (i > player.level + 1 && i != 4)
+        if (i > player.level + 1)
             TextColor(4);
+        if(i>=4)
+            TextColor(7);
         cout << levelName[i] << endl;
         TextColor(7);
     }
@@ -61,21 +66,26 @@ void choiceLevel(Player player)
             {
                 x--;
                 if (x < 0)
-                    x = 4;
+                    x = 5;
             }
             if (toupper(key) == 'S' || key == 80) // Di chuyển phải
             {
                 x++;
-                if (x > 4)
+                if (x > 5)
                     x = 0;
             }
 
             if (key == 13)
             {
+                if(x==5)
+                {
+                    system("cls");
+                    displayMenu(x,x);
+                    exit(0);
+                }
                 if(x==4)
                 while (true)
                 {
-                    Sleep(5000);
                     system("cls");
                     cout << "Input heigth and width: ";
                     int h, w;
@@ -95,32 +105,37 @@ void choiceLevel(Player player)
                             if (w & 1)
                                 w++;
                             w = min(w, 20);
-                            cout << h << " x " << w;
+                            cout << h << " x " << w << endl;
+                            Sleep(3000);
                         }
-                        return void(makeLevel(h, w,player));
+                        cout << "here";
+                        makeLevel(h,w,player);
+                        return;
                     }
+                    Sleep(3000);
                 }
+
                 if(x>player.level+1)
                     continue;
-                if (x != 4)
-                {
-                    if(x==0)
-                        makeLevel(2,2,player);
-                    if(x==1)
-                        makeLevel(4,4,player);
-                    if(x==2)
-                        makeLevel(6,6,player);
-                    if(x==3)
-                        makeLevel(10,10,player);
 
-                    return;
-                }
+                if(x==0)
+                    makeLevel(2,2,player);
+                if(x==1)
+                    makeLevel(4,4,player);
+                if(x==2)
+                    makeLevel(6,6,player);
+                if(x==3)
+                    makeLevel(10,10,player);
+
+                return;
             }
             levelName[x][0] = '>';
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 6; i++)
             {
-                if (i > player.level + 1 && i != 4)
+                if (i > player.level + 1)
                     TextColor(4);
+                if(i>=4)
+                    TextColor(7);
                 cout << levelName[i] << endl;
                 TextColor(7);
             }

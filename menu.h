@@ -32,6 +32,7 @@ void displayMenu(int &n, int &m)
     cout <<  endl;
     int choice = 0;
     menuMove(choice);
+    system("cls");
     if(choice==0)
         printLogin();
     if(choice==1)
@@ -42,23 +43,28 @@ void displayMenu(int &n, int &m)
         printCredit();
     if(choice==4)
         printHighScore();
+    if(choice==5)
+    {
+        cout << "Exit sucessfully!";
+        exit(0);
+    }
 }
 
 void menuMove(int &x)
 {
-    string bar[5];
+    string bar[6];
     bar[0] = "  [ LOGIN ]  ";
     bar[1] = "  [ SIGN UP ]  ";
     bar[2] = "  [ HELP ]  ";
     bar[3] = "  [ CREDIT ]  ";
     bar[4] = "  [ TOP HIGH SCORE ]  ";
-
+    bar[5] = "  [ EXIT ]  ";
 
     bar[x][0] = '>';
     bar[x][bar[x].size()-1] = '<';
 
-    doTab(6);
-    for(int i = 0; i < 5; i++)
+    doTab(4);
+    for(int i = 0; i < 6; i++)
     {
         cout <<  bar[i];
         doTab(2);
@@ -82,12 +88,12 @@ void menuMove(int &x)
             {
                 x--;
                 if (x < 0)
-                    x = 4;
+                    x = 5;
             }
             if (toupper(key)== 'D' || key == 77) // Di chuyển phải
             {
                 x++;
-                if (x > 4)
+                if (x > 5)
                     x = 0;
             }
 
@@ -96,8 +102,8 @@ void menuMove(int &x)
 
         bar[x][0] = '>';
         bar[x][bar[x].size()-1] = '<';
-        doTab(6);
-        for(int i = 0; i < 5; i++)
+        doTab(4);
+        for(int i = 0; i < 6; i++)
         {
             cout <<  bar[i];
             doTab(2);
@@ -112,9 +118,9 @@ void menuMove(int &x)
 void printHelp()
 {
     cout <<  "\n\nI/ HOW TO PLAY?\n\n";
-    cout <<  "Press A/S/D/W to move LEFT/DOWN/RIGHT/LEFT.\n";
+    cout <<  "Press A/S/D/W or arrows to move LEFT/DOWN/RIGHT/LEFT.\n";
     cout <<  "Press Enter to select the cell.\n";
-    cout <<  "Press Z to undo and R to swap all cells.\n";
+    cout <<  "Press Z to undo, H for hint and R to swap all cells.\n";
     cout <<  "The less time you need to finish this game, the more high score you get.\n";
     cout <<  "That's all. Have fun and good luck!\n\n";
 
