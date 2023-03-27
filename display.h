@@ -10,7 +10,8 @@ void printBoard(int n, int m, int type, char view[200][200], char pic[200][200],
 {
     // Note: & là viền ngoài map, $ là đã bị ăn, @ là phần trong của ô, + là giao điểm, % là gợi ý
 
-    // system("cls");
+    if(n>10)
+        system("cls");
     gotoxy(0,max(3,(20-n)/2-4)); // lui xuong theo y
     for (int i = 0; i <= n * hei - (n - 2); i++)
     {

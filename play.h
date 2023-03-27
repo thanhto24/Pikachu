@@ -9,7 +9,7 @@ void unSelect(int n, int m, bool ate[200][200], bool selected[200][200])
                 selected[i][j] = false;
 }
 
-void calcTime(int &TIME, int m1, int s1, int m2, int s2)
+void calcTime(int &TIME, int m1, int s1, int m2, int s2, int n)
 {
     int tmp = TIME - (m2 - m1) * 60 - (s2 - s1);
     Sleep(10);
@@ -48,10 +48,12 @@ void printInfo(Player player, int Swap, int Hint)
 
 }
 
-void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200],int &Swap, int &Hint, int &TIME, const int m1, const int s1)
+void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200],int &Swap, int &Hint, int &TIME, const int m1, const int s1, const int choosenLevel)
 {
     int X[2], Y[2], cnt = 0;
     bool isSlide = true;
+    if(choosenLevel==1)
+        isSlide = false;
     // select va  movingOn chay tu 0 den n - 1
     while (true)
     {
@@ -61,7 +63,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
         m2 = t->tm_min;
         s2 = t->tm_sec;
 
-        calcTime(TIME, m1, s1, m2, s2);
+        calcTime(TIME, m1, s1, m2, s2,n);
 
         if (TIME == -1)
             return;
@@ -108,12 +110,6 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                 printBoard(n, m, 2, view, pic, movingOn, selected, cpy);
                 Sleep(300);
                 printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
-
-                movingOn[y][x] = true;
-                printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
-                movingOn[y][x] = false;
-
-                return;
             }
 
             // Nhấn z để tháo select
@@ -183,8 +179,11 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                     {
                         if (isSlide)
                         {
-                            int tmp = rand() % 4 + 1;
-                            tmp = 4;
+                            int tmp = rand() % 4 + 1;;
+                            if(choosenLevel==2)
+                                tmp = 4;
+                            if(choosenLevel==3)
+                                tmp = 1;
                             if (tmp == 1)
                                 doSlideUp(y1, x1, y2, x2, n, m, C, view, ate);
                             if (tmp == 2)
@@ -227,13 +226,13 @@ void choiceLevel(Player player);
 
 void process(int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200], Player &player, const int choosenLevel)
 {
-    int x = 0, y = 0, TIME = 300 - choosenLevel * 30, Swap = 6 - choosenLevel, Hint = 3 - choosenLevel / 2;
+    int x = 0, y = 0, TIME = 300 - choosenLevel * 30, Swap = 6 - choosenLevel, Hint = 6 - choosenLevel;
 
     if (choosenLevel == 5)
     {
-        TIME = 333;
+        TIME = 999;
         Swap = 666;
-        Hint = 999;
+        Hint = 333;
     }
 
     int m1, s1;
@@ -254,7 +253,7 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
             refreshArray(n, m, C, view, ate);
             printBoard(n, m, 2, view, pic, movingOn, selected, cpy);
         }
-        move(n, m, y, x, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, m1, s1);
+        move(n, m, y, x, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, m1, s1, choosenLevel);
         movingOn[y][x] = false;
         printInfo(player,Swap,Hint);
         if (TIME == -1)
@@ -265,14 +264,22 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
     printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
     Sleep(1234);
     system("cls");
-    cout << "GAME OVER!";
-    system("cls");
     if (TIME != -1)
     {
         if (choosenLevel == player.level)
             player.level++;
         player.level = min(player.level, 5);
+        cout << "GAME OVER!";
     }
+    else
+    {
+        TextColor(4);
+        cout << "You are looser!";
+        TextColor(7);
+    }
+    Sleep(1234);
+    system("cls");
+    
     updateFile(player);
     choiceLevel(player);
 }

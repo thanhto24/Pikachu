@@ -122,17 +122,17 @@ void choiceLevel(Player player)
                     Sleep(3000);
                 }
 
-                if(x>player.level+1)
+                if(x+1>player.level)
                     continue;
 
                 if(x==0)
-                    makeLevel(2,2,x+1,player);
-                if(x==1)
                     makeLevel(4,4,x+1,player);
+                if(x==1)
+                    makeLevel(6,8,x+1,player);
                 if(x==2)
-                    makeLevel(6,6,x+1,player);
+                    makeLevel(8,10,x+1,player);
                 if(x==3)
-                    makeLevel(10,10,x+1,player);
+                    makeLevel(10,14,x+1,player);
 
                 return;
             }

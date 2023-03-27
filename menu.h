@@ -16,7 +16,7 @@ void displayMenu(int &n, int &m)
 {
     system("cls");
     const int heii = 5, widd = 7;
-    // char pic[heii * hei - (heii)+1][widd * wid - (widd - 2) - 7+1];
+    // char pic[heii hei - (heii)+1][widd * wid - (widd - 2) - 7+1];
     char pic[200][200];
     gotoxy(0,5);
     makePic(heii,widd,pic,0);
