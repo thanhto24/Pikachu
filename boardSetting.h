@@ -1,6 +1,6 @@
 #include "header.h"
 
-void setAte(int y, int x, char C[200][200], char view[200][200], bool ate[200][200])
+void setAte(int hei, int wid, int y, int x, char C[200][200], char view[200][200], bool ate[200][200])
 {
     ate[y][x] = true;
     C[y][x] = '0';
@@ -23,19 +23,19 @@ void setAte(int y, int x, char C[200][200], char view[200][200], bool ate[200][2
         }
 }
 
-void setHint(int y, int x,char view[200][200])
+void setHint(int hei, int wid, int y, int x, char view[200][200])
 {
     x = (x - 1) * (wid - 1) + 2;
     y = (y - 1) * (hei - 1) + 2;
     for (int i = y; i < y + hei - 2; i++)
         for (int j = x; j < x + wid - 2; j++)
         {
-            if(view[i][j]=='@')
+            if (view[i][j] == '@')
                 view[i][j] = '%';
         }
 }
 
-void updateView(int n, int m, char C[200][200], char view[200][200])
+void updateView(int hei, int wid, int n, int m, char C[200][200], char view[200][200])
 {
     for (int i = hei / 2 + 1; i <= n * hei - (n - 2); i += hei - 1)
         for (int j = wid / 2 + 1; j <= m * wid - (m - 2); j += wid - 1)
@@ -43,7 +43,7 @@ void updateView(int n, int m, char C[200][200], char view[200][200])
                 view[i][j] = C[(i - 1 - hei / 2) / (hei - 1) + 1][(j - 1 - wid / 2) / (wid - 1) + 1];
 }
 
-void refreshArray(int n, int m, char C[200][200], char view[200][200], bool ate[200][200])
+void refreshArray(int hei, int wid, int n, int m, char C[200][200], char view[200][200], bool ate[200][200])
 {
     vector<ii> adj;
     adj.push_back(mp(-1, -1));
@@ -88,5 +88,5 @@ void refreshArray(int n, int m, char C[200][200], char view[200][200], bool ate[
             dem += 2;
         }
 
-    updateView(n, m, C, view);
+    updateView(hei, wid, n, m, C, view);
 }

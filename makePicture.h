@@ -1,6 +1,7 @@
+#pragma once
 #include "header.h"
 
-void makePic(int n, int m, char pic[200][200],int num)
+void makePic(int hei, int wid, int n, int m, char pic[200][200],int num)
 {
     for (int i = 0; i <= n * hei - (n - 2); i++)
     {

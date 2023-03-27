@@ -7,8 +7,11 @@ void printLogin()
     system("cls");
     //Doc thong tin tu file
     Player player,tmp;
-    player.maxScore = player.level = -1;
+
+    TextColor(5);
     cout <<  "Type your account information to login!\n";
+    TextColor(7);
+
     bool sucess = false;
 
     cout <<  "Username: ";
@@ -74,6 +77,8 @@ void printLogin()
 
     }
 
+    bool existUsername = false;
+
     ifstream fin;
     fin.open("account\\account.dat", ios::binary);
     while(!fin.eof())
@@ -81,22 +86,36 @@ void printLogin()
         fin.read((char *) &(tmp), sizeof(Player));
         if(fin.eof())
             break;
-        if(strcmp(tmp.username,player.username) == 0 && strcmp(tmp.password,player.password) == 0)
+        if(strcmp(tmp.username,player.username) == 0 )
         {
-            player.level = tmp.level;
-            player.maxScore = tmp.maxScore;
-            fin.close();
+            existUsername = true;
+            if(strcmp(tmp.password,player.password) == 0)
+            {
+                player.level = tmp.level;
+                player.maxScore = tmp.maxScore;
+                fin.close();
 
-            cout <<  "Dang nhap thanh cong!\nPress any key to continue\n";
+                cout <<  "Login successfully!";
+                TextColor(6);
+                cout << "\nPress any key to continue\n";
+                TextColor(7);
 
-            ch = _getch();
-            choiceLevel(player);
-            return;
+                ch = _getch();
+                choiceLevel(player);
+                return;
+            }
         }   
     }
     if(!sucess)
     {
-        cout << "Thong tin khong hop le!\nPress any key to login again\n";
+        TextColor(4);
+        if(existUsername)
+            cout << "Your password is wrong!";
+        else
+            cout << "Your username is not exist!";
+        TextColor(6);
+        cout << "\nPress any key to login again\n";
+        TextColor(7);
         ch = _getch();
         printLogin();
     }

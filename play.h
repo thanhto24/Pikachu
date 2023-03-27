@@ -54,7 +54,7 @@ void printInfo(Player player, int Swap, int Hint, int Point)
 
 }
 
-void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200],int &Swap, int &Hint, int &TIME, const int m1, const int s1, int &Point, const int choosenLevel)
+void move(int hei, int wid, int n, int m, int &y, int &x, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200],int &Swap, int &Hint, int &TIME, const int m1, const int s1, int &Point, const int choosenLevel)
 {
     int X[2], Y[2], cnt = 0;
     bool isSlide = true;
@@ -113,10 +113,10 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                 }
                 Point -= 10;
                 unSelect(n, m, ate, selected); // Neu player da chon 1 o ma bam R thi se bug, nen neu bam R thi thao select het
-                refreshArray(n, m, C, view, ate);
-                printBoard(n, m, 2, view, pic, movingOn, selected, cpy);
+                refreshArray(hei, wid, n, m, C, view, ate);
+                printBoard(hei, wid, n, m, 2, view, pic, movingOn, selected, cpy);
                 Sleep(300);
-                printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+                printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
             }
 
             // Nhấn z để tháo select
@@ -142,15 +142,15 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                         for (int k = 1; k <= n; k++)
                             for (int l = 1; l <= m; l++)
                                 if (!ate[i][j] && !ate[k][l]) // Nếu 2 ô chưa đi
-                                    if (finalCheck(i, j, k, l, n, m, 0, C, view, pic, ate, movingOn, selected, cpy))
+                                    if (finalCheck(hei,wid,i, j, k, l, n, m, 0, C, view, pic, ate, movingOn, selected, cpy))
                                     {
-                                        setHint(i, j, view);
-                                        setHint(k, l, view);
-                                        printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+                                        setHint(hei, wid, i, j, view);
+                                        setHint(hei, wid, k, l, view);
+                                        printBoard(hei, wid,n, m, 0, view, pic, movingOn, selected, cpy);
                                         Sleep(300);
 
                                         movingOn[y][x] = true;
-                                        printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+                                        printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
                                         movingOn[y][x] = false;
 
                                         return;
@@ -161,7 +161,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
             {
                 memset(movingOn, false, sizeof(movingOn));
                 movingOn[y][x] = true;
-                printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+                printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
                 movingOn[y][x] = false; // Neu khong gan lai thi no se movingOn tat ca cac o da di qua
             }
 
@@ -183,24 +183,24 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                         swap(y1, y2);
                     }
 
-                    if (finalCheck(y1, x1, y2, x2, n, m, 1, C, view, pic, ate, movingOn, selected, cpy))
+                    if (finalCheck(hei,wid,y1, x1, y2, x2, n, m, 1, C, view, pic, ate, movingOn, selected, cpy))
                     {
                         if (isSlide)
                         {
                             int tmp = min(4,choosenLevel);
                             if (tmp == 1)
-                                doSlideUp(y1, x1, y2, x2, n, m, C, view, ate);
+                                doSlideUp(hei, wid, y1, x1, y2, x2, n, m, C, view, ate);
                             if (tmp == 2)
-                                doSlideDown(y1, x1, y2, x2, n, m, C, view, ate);
+                                doSlideDown(hei, wid, y1, x1, y2, x2, n, m, C, view, ate);
                             if (tmp == 3)
-                                doSlideRight(y1, x1, y2, x2, n, m, C, view, ate);
+                                doSlideRight(hei, wid, y1, x1, y2, x2, n, m, C, view, ate);
                             if (tmp == 4)
-                                doSlideLeft(y1, x1, y2, x2, n, m, C, view, ate);
+                                doSlideLeft(hei, wid, y1, x1, y2, x2, n, m, C, view, ate);
                         }
                         else
                         {
-                            setAte(y1, x1, C, view, ate);
-                            setAte(y2, x2, C, view, ate);
+                            setAte(hei, wid, y1, x1, C, view, ate);
+                            setAte(hei, wid, y2, x2, C, view, ate);
                         }
                         Point += 5;
                     }
@@ -211,16 +211,16 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                                 if (selected[i][j] && !ate[i + 1][j + 1])
                                     selected[i][j] = false;
 
-                        printBoard(n, m, 1, view, pic, movingOn, selected, cpy);
+                        printBoard(hei, wid, n, m, 1, view, pic, movingOn, selected, cpy);
                         Point --;
                         Sleep(300);
                     }
                     unSelect(n, m, ate, selected);
                     movingOn[y][x] = true;
-                    printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+                    printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
                     return;
                 }
-                printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+                printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
                 cnt++;
             }
         }
@@ -230,15 +230,15 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
 void updateFile(Player player);
 void choiceLevel(Player player);
 
-void process(int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200], Player &player, const int choosenLevel)
+void process(int hei, int wid,int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200], Player &player, const int choosenLevel)
 {
-    int x = 0, y = 0, TIME = 300 - choosenLevel * 30, Swap = 6 - choosenLevel, Hint = 6 - choosenLevel, Point = (Swap + Hint) * 10;
+    int x = 0, y = 0, TIME = 600 - choosenLevel * 30, Swap = 12 - choosenLevel, Hint = 12 - choosenLevel, Point = (Swap + Hint) * 10;
 
     if (choosenLevel == 5)
     {
-        TIME = 999;
-        Swap = 666;
-        Hint = 333;
+        TIME = 3600;
+        Swap = 6666;
+        Hint = 3333;
     }
 
     int m1, s1;
@@ -250,20 +250,20 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
     printInfo(player,Swap,Hint,Point);
     memset(movingOn, false, sizeof(movingOn));
     movingOn[y][x] = true;
-    printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+    printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
 
     while (!checkEnd(n, m, ate))
     {
         bool swapped = false;
-        while (cantMove(n, m, C, view, pic, ate, movingOn, selected, cpy))
+        while (cantMove(hei,wid,n, m, C, view, pic, ate, movingOn, selected, cpy))
         {
             swapped = true;
-            refreshArray(n, m, C, view, ate);
-            printBoard(n, m, 2, view, pic, movingOn, selected, cpy);
+            refreshArray(hei, wid,n, m, C, view, ate);
+            printBoard(hei,wid,n, m, 2, view, pic, movingOn, selected, cpy);
         }
         if(swapped)
-            printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
-        move(n, m, y, x, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, m1, s1,Point, choosenLevel);
+            printBoard(hei,wid,n, m, 0, view, pic, movingOn, selected, cpy);
+        move(hei,wid,n, m, y, x, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, m1, s1,Point, choosenLevel);
         movingOn[y][x] = false;
         printInfo(player,Swap,Hint,Point);
         if (TIME == -1)
@@ -272,7 +272,7 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
 
     Point -= max(0, ((t->tm_min - m1) * 60 + (t->tm_sec - s1))/5); // 5 giay mat 1 point
     memset(movingOn, false, sizeof(movingOn));
-    printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+    printBoard(hei, wid,n, m, 0, view, pic, movingOn, selected, cpy);
     Sleep(1234);
     system("cls");
     if (TIME != -1)
@@ -280,19 +280,26 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
         if (choosenLevel == player.level)
             player.level++;
         player.level = min(player.level, 5);
-        cout << "Congratulation!! You got ";
+        cout << "Congratulation!! You got: ";
         TextColor(3);
-        cout << Point << endl;
+        cout << Point;
         TextColor(7);
-        cout << "point!\nGAME OVER!";
+        cout << " point!\nGAME OVER!\n";
     }
     else
     {
         TextColor(4);
-        cout << "You are looser!";
+        cout << "You are looser!\n";
         TextColor(7);
     }
-    Sleep(4321);
+
+    TextColor(6);
+    cout <<  "Press any key to continue!\n";
+    TextColor(7);
+
+    char ch;
+    ch = _getch();
+
     system("cls");
     
     updateFile(player);

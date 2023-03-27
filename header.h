@@ -9,8 +9,8 @@
 #define f first
 #define s second 
 #define mp make_pair
-#define hei 5
-#define wid 11
+// #define hei 5
+// #define wid 11
 
 using namespace std;
 

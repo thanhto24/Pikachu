@@ -1,6 +1,6 @@
 #include "header.h"
 
-bool cantMove(int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
+bool cantMove(int hei, int wid, int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
 {
     if (checkEnd(n, m, ate))
         return false;
@@ -13,7 +13,7 @@ bool cantMove(int n, int m, char C[200][200], char view[200][200], char pic[200]
                 for (int l = 1; l <= m; l++)
                 {
                     if (!ate[i][j] && !ate[k][l]) // Nếu 2 ô chưa đi
-                        if (finalCheck(i, j, k, l, n, m, 0, C, view, pic, ate, movingOn, selected, cpy))
+                        if (finalCheck(hei, wid, i, j, k, l, n, m, 0, C, view, pic, ate, movingOn, selected, cpy))
                         {
                             // TextColor(4);
                             // cout <<  i << " " << j << "   " << k << " " << l << endl; // Turn on to cheat
@@ -27,4 +27,3 @@ bool cantMove(int n, int m, char C[200][200], char view[200][200], char pic[200]
     }
     return true;
 }
-

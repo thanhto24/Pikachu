@@ -2,10 +2,11 @@
 #include "header.h"
 #include "login.h"
 #include "signup.h"
+#include "makePicture.h"
 
-void makePic(int n, int m, char pic[200][200], int num);
 void doTab(int cnt);
 
+void makePic(int hei, int wid, int n, int m, char pic[200][200], int num);
 void menuMove(int &choice);
 void printHelp();
 void printHighScore();
@@ -19,11 +20,11 @@ void displayMenu(int &n, int &m)
     // char pic[heii hei - (heii)+1][widd * wid - (widd - 2) - 7+1];
     char pic[200][200];
     gotoxy(0,5);
-    makePic(heii,widd,pic,0);
+    makePic(5,11,heii,widd,pic,0);
     TextColor(14);
-    for(int i = 0; i <= heii * hei - (heii); i++)
+    for(int i = 0; i <= heii * 5 - (heii); i++)
     {
-        for(int j = 0; j <= widd * wid - (widd - 2) - 7; j++)
+        for(int j = 0; j <= widd * 11 - (widd - 2) - 7; j++)
         {
             if(j==0)
                 doTab(9);

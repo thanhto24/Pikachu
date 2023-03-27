@@ -33,7 +33,10 @@ void printSignUp()
     int dem = 0;
     dangky.maxScore = -1;
     dangky.level = 1;
+
+    TextColor(5);
     cout <<  "Type your account information to sign up:\n";
+    TextColor(7);
 
     cout <<  "Username: ";
     gets(dangky.username);
@@ -114,8 +117,9 @@ void printSignUp()
     fout.write((char *) &(dangky), sizeof(Player));
     fout.close();
 
-
+    TextColor(6);
     cout <<  "\nSign up sucessfully!\nPress any key to back to menu!";
+    TextColor(7);
     
     ch = _getch();
     int tmp = 0;

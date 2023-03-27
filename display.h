@@ -2,41 +2,46 @@
 
 void doTab(int cnt)
 {
-    for(int i = 0; i < cnt; i++)
-        cout <<  '\t';
+    for (int i = 0; i < cnt; i++)
+        cout << '\t';
 }
 
-void printBoard(int n, int m, int type, char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
+void printBoard(int hei, int wid, int n, int m, int type, char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
 {
     // Note: & là viền ngoài map, $ là đã bị ăn, @ là phần trong của ô, + là giao điểm, % là gợi ý
 
-    if(n>10)
-        system("cls");
-    gotoxy(0,max(3,(20-n)/2-4)); // lui xuong theo y
+    int lineColor = rand() % 15 + 1, basicColor = 7, picColor = (n+m) % 15;
+
+    const int errorColor = 6, swapColor = 4, hintColor = 2;
+
+    while(lineColor == basicColor || lineColor == picColor || lineColor == errorColor)
+        lineColor = rand() % 15 + 1;
+
+    gotoxy(0, max(3, (20 - n) / 2 - 4)); // lui xuong theo y
     for (int i = 0; i <= n * hei - (n - 2); i++)
     {
         for (int j = 0; j <= m * wid - (m - 2); j++)
         {
-            if(j==0)
-                doTab(max(1,(20-m)/2)); // Cach ra xa khoi goc trai, vi man hinh co chieu dai khoang 20 tab nen co cong thuc tren
+            if (j == 0)
+                doTab(max(1, (20 - m) / 2)); // Cach ra xa khoi goc trai, vi man hinh co chieu dai khoang 20 tab nen co cong thuc tren
             if (type == 0)
-                TextColor(7);
+                TextColor(basicColor);
             if (type == 1)
-                TextColor(4);
+                TextColor(swapColor);
             if (type == 2)
-                TextColor(6);
+                TextColor(errorColor);
 
-            if(view[i][j]=='%')
+            if (view[i][j] == '%')
             {
-                TextColor(2);
+                TextColor(hintColor);
                 cout << (char)177;
-                TextColor(7);
+                TextColor(basicColor);
                 view[i][j] = '@';
                 continue;
             }
             if (view[i][j] == '^' || view[i][j] == '>' || view[i][j] == 'x')
             {
-                TextColor(9);
+                TextColor(lineColor);
                 if (view[i][j] == '^')
                 {
                     if (view[i - 1][j] >= 'A' && view[i - 1][j] <= 'Z')
@@ -55,31 +60,31 @@ void printBoard(int n, int m, int type, char view[200][200], char pic[200][200],
                     else
                         view[i][j] = '-';
                 }
-                cout <<  view[i][j];
+                cout << view[i][j];
                 view[i][j] = cpy[i][j];
                 // if (i == 0 || i == n * hei - (n - 2) || j == 0 || j == m * wid - (m - 2))
                 //     view[i][j] = '&'; // Neu la vien ngoai thi tra ve ki tu ban dau cua no, dam bao trat tu cua board
                 // else
                 //     view[i][j] = '$'; // Vi khi noi thi chac chan da bi an, nen ghi dau nay
-                TextColor(7);
+                TextColor(basicColor);
                 continue;
             }
 
             if (view[i][j] == '&')
             {
-                cout <<  ' ';
+                cout << ' ';
                 continue;
             }
 
             if (view[i][j] == '+')
             {
                 if (view[i - 1][j] == '|' || view[i + 1][j] == '|' || view[i][j + 1] == '-' || view[i][j - 1] == '-')
-                    cout <<  view[i][j];
+                    cout << view[i][j];
                 else
                 {
-                    TextColor((n+m)%15+1);
-                    cout <<  pic[i][j];
-                    TextColor(7);
+                    TextColor((n + m) % 15 + 1);
+                    cout << pic[i][j];
+                    TextColor(basicColor);
                 }
                 continue;
             }
@@ -93,53 +98,52 @@ void printBoard(int n, int m, int type, char view[200][200], char pic[200][200],
                 if (movingOn[(i - 1) / (hei - 1)][(j - 1) / (wid - 1)])
                 {
                     if ((i - 1) % (hei - 1) == 0 || (j - 1) % (wid - 1) == 0) // Cái viền thì cout khoảng trắng, để con trỏ nhìn nhỏ hơn cái viền
-                        cout <<  ' ';
+                        cout << ' ';
                     else
-                        cout <<  (char)177;
+                        cout << (char)177;
                 }
                 else if (selected[(i - 1) / (hei - 1)][(j - 1) / (wid - 1)])
                 {
                     if (view[i][j] == '@')
-                        cout <<  (char)47;
+                        cout << (char)47;
                     else
                     {
-                        TextColor((n+m)%15+1);
-                        cout <<  pic[i][j];
-                        TextColor(7);
+                        TextColor((n + m) % 15 + 1);
+                        cout << pic[i][j];
+                        TextColor(basicColor);
                     }
                 }
                 else if (view[i][j] == '$')
                 {
-                    TextColor((n+m)%15+1);
-                    cout <<  pic[i][j];
-                    TextColor(7);
+                    TextColor((n + m) % 15 + 1);
+                    cout << pic[i][j];
+                    TextColor(basicColor);
                 } // Them o day de ve cai vien trai va duoi
                 else
-                    cout <<  ' ';
+                    cout << ' ';
             }
             else
             {
-                cout <<  view[i][j];
+                cout << view[i][j];
             }
 
             // Sau khi viết ra thì đổi lại
         }
-        cout <<  endl;
+        cout << endl;
     }
 }
 
-
-void cpyView(int n, int m, char view[200][200], char cpy[200][200])
+void cpyView(int hei, int wid, int n, int m, char view[200][200], char cpy[200][200])
 {
     for (int i = 0; i <= n * hei - (n - 2); i++)
         for (int j = 0; j <= m * wid - (m - 2); j++)
             cpy[i][j] = view[i][j];
 }
 
-void drawLine(int n, int m, char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], vector<ii> route, char cpy[200][200])
+void drawLine(int hei, int wid, int n, int m, char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], vector<ii> route, char cpy[200][200])
 {
     int Y1, X1, Y2, X2;
-    cpyView(n, m, view, cpy);
+    cpyView(hei, wid, n, m, view, cpy);
     for (int i = 0; i < route.size() - 1; i++)
     {
         Y1 = route[i].f;
@@ -189,6 +193,6 @@ void drawLine(int n, int m, char view[200][200], char pic[200][200], bool moving
             view[Y1][X1] = 'x'; // Giao diem giua cac line va khac dinh dau voi dinh cuoi
     }
 
-    printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+    printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
     Sleep(500);
 }

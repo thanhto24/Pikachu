@@ -1,6 +1,6 @@
 #include "header.h"
 
-void init(int n, int m, char C[200][200], char view[200][200])
+void init(int hei, int wid, int n, int m, char C[200][200], char view[200][200])
 {
     // cin >> n;
     bool was[n * m];

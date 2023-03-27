@@ -9,7 +9,7 @@ bool checkEnd(int n, int m, bool ate[200][200])
     return true;
 }
 
-bool bfs(int y1, int x1, int y2, int x2, int n, int m, bool type, bool ate[200][200], char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
+bool bfs(int hei, int wid, int y1, int x1, int y2, int x2, int n, int m, bool type, bool ate[200][200], char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
 {
     int graph[200][200];
     ii trace[200][200];
@@ -79,7 +79,7 @@ bool bfs(int y1, int x1, int y2, int x2, int n, int m, bool type, bool ate[200][
         return true;
     route.push_back(mp(start.f, start.s));
 
-    drawLine(n, m, view, pic, movingOn, selected, route, cpy);
+    drawLine(hei, wid, n, m, view, pic, movingOn, selected, route, cpy);
 
     return true;
 }
@@ -109,7 +109,7 @@ bool bfs(int y1, int x1, int y2, int x2, int n, int m, bool type, bool ate[200][
 //     return true;
 // }
 
-bool finalCheck(int y1, int x1, int y2, int x2, int n, int m, bool type, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
+bool finalCheck(int hei, int wid, int y1, int x1, int y2, int x2, int n, int m, bool type, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
 {
     if (y1 == y2 && x1 == x2)
         return false;
@@ -120,5 +120,5 @@ bool finalCheck(int y1, int x1, int y2, int x2, int n, int m, bool type, char C[
     //     return true;
     // return checkUup(y1, x1, y2, x2, n, m, type, C, view, pic, movingOn, selected, cpy);
 
-    return bfs(y1, x1, y2, x2, n, m, type, ate, view, pic, movingOn, selected, cpy);
+    return bfs(hei, wid, y1, x1, y2, x2, n, m, type, ate, view, pic, movingOn, selected, cpy);
 }
