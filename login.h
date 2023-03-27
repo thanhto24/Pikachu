@@ -95,9 +95,8 @@ void printLogin()
                 player.maxScore = tmp.maxScore;
                 fin.close();
 
-                cout <<  "Login successfully!";
                 TextColor(6);
-                cout << "\nPress any key to continue\n";
+                cout << "Login successfully!\nPress any key to continue\n";
                 TextColor(7);
 
                 ch = _getch();

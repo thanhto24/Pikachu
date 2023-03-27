@@ -113,7 +113,12 @@ void choiceLevel(Player player)
                                 cout << w << endl;
                                 TextColor(7);
                             }
-                            cout << "Press any key to continue\n";
+
+                            TextColor(6);
+                            cout <<  "Custom game successfully!";
+                            cout << "\nPress any key to continue\n";
+                            TextColor(7);
+
                             char ch;
                             ch = _getch();
                             if(h>19)
@@ -129,12 +134,16 @@ void choiceLevel(Player player)
                     continue;
 
                 if (x == 0)
+                    // makeLevel(5, 11, 2, 2, x + 1, player); // Turn on to cheat
                     makeLevel(5, 11, 4, 4, x + 1, player);
                 if (x == 1)
+                    // makeLevel(5, 11, 2, 2, x + 1, player);
                     makeLevel(5, 11, 6, 8, x + 1, player);
                 if (x == 2)
+                    // makeLevel(5, 11, 2, 2, x + 1, player);
                     makeLevel(5, 11, 8, 14, x + 1, player);
                 if (x == 3)
+                    // makeLevel(5, 11, 2, 2, x + 1, player);
                     makeLevel(3, 9, 20, 20, x + 1, player);
 
                 return;

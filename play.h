@@ -58,8 +58,6 @@ void move(int hei, int wid, int n, int m, int &y, int &x, char C[200][200], char
 {
     int X[2], Y[2], cnt = 0;
     bool isSlide = true;
-    if(choosenLevel==1)
-        isSlide = false;
     // select va  movingOn chay tu 0 den n - 1
     while (true)
     {
@@ -116,7 +114,12 @@ void move(int hei, int wid, int n, int m, int &y, int &x, char C[200][200], char
                 refreshArray(hei, wid, n, m, C, view, ate);
                 printBoard(hei, wid, n, m, 2, view, pic, movingOn, selected, cpy);
                 Sleep(300);
+
+                movingOn[y][x] = true;
                 printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
+                movingOn[y][x] = false;
+                
+                return;
             }
 
             // Nhấn z để tháo select
@@ -232,7 +235,7 @@ void choiceLevel(Player player);
 
 void process(int hei, int wid,int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200], Player &player, const int choosenLevel)
 {
-    int x = 0, y = 0, TIME = 600 - choosenLevel * 30, Swap = 12 - choosenLevel, Hint = 12 - choosenLevel, Point = (Swap + Hint) * 10;
+    int x = 0, y = 0, TIME = 600 - choosenLevel * 30, Swap = 10 - choosenLevel, Hint = 10 - choosenLevel, Point = (Swap + Hint) * 100;
 
     if (choosenLevel == 5)
     {
@@ -270,16 +273,22 @@ void process(int hei, int wid,int n, int m, char C[200][200], char view[200][200
             break;
     }
 
-    Point -= max(0, ((t->tm_min - m1) * 60 + (t->tm_sec - s1))/5); // 5 giay mat 1 point
+    Point -= max(0, ((t->tm_min - m1) * 60 + (t->tm_sec - s1))/2); // 2 giay mat 1 point
+    player.maxScore = 0;
+
     memset(movingOn, false, sizeof(movingOn));
     printBoard(hei, wid,n, m, 0, view, pic, movingOn, selected, cpy);
+
     Sleep(1234);
     system("cls");
+
     if (TIME != -1)
     {
         if (choosenLevel == player.level)
             player.level++;
         player.level = min(player.level, 5);
+        if(choosenLevel==4)
+            player.maxScore = Point;
         cout << "Congratulation!! You got: ";
         TextColor(3);
         cout << Point;
@@ -319,7 +328,7 @@ void updateFile(Player player)
             break;
         if (strcmp(tmp.username, player.username) == 0 && strcmp(tmp.password, player.password) == 0)
         {
-            tmp.level = min(player.level, 5);
+            tmp.level = player.level;
             tmp.maxScore = max(player.maxScore, tmp.maxScore);
         }
         adj.push_back(tmp);

@@ -118,7 +118,7 @@ void printSignUp()
     fout.close();
 
     TextColor(6);
-    cout <<  "\nSign up sucessfully!\nPress any key to back to menu!";
+    cout <<  "\nSign up sucessfully!\nPress any key to back to menu!\n";
     TextColor(7);
     
     ch = _getch();

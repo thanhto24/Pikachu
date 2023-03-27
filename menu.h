@@ -178,9 +178,55 @@ void printHelp()
     }
 }
 
+bool cmp(Player a, Player b)
+{
+    return a.maxScore > b.maxScore;
+}
+
 void printHighScore()
 {
-    cout <<  "Hai sco!";
+    system("cls");
+
+    Player tmp;
+    vector <Player> topPlayer;
+
+    ifstream fin;
+    fin.open("account\\account.dat", ios::binary);
+    while(!fin.eof())
+    {
+        fin.read((char *) &(tmp), sizeof(Player));
+        if(fin.eof())
+            break;
+        if(tmp.level == 5)
+            topPlayer.push_back(tmp);
+        if(topPlayer.size()==5)
+            break;
+    }
+    fin.close();
+
+    sort(topPlayer.begin(),topPlayer.end(),cmp);
+
+    gotoxy(0,5);
+    doTab(11);
+
+    cout << "TOP HIGHEST SCORE PLAYER\n\n";
+    for(int i = 0; i < topPlayer.size(); i++)
+    {
+        doTab(10);
+        cout << topPlayer[i].username;
+        for(int j = 0; j < 30 - strlen(topPlayer[i].username); j++)
+            cout << '.';
+        cout << topPlayer[i].maxScore << endl << endl;
+    }
+
+    TextColor(6);
+    cout <<  "\nPress any key to back to menu!\n";
+    TextColor(7);
+    
+    char ch;
+    ch = _getch();
+    int x = 0;
+    displayMenu(x,x);
 }
 
 void printCredit()
