@@ -9,7 +9,7 @@ void unSelect(int n, int m, bool ate[200][200], bool selected[200][200])
                 selected[i][j] = false;
 }
 
-void calcTime(int &TIME, int m1, int s1, int m2, int s2, int n)
+void calcTime(int &TIME, int m1, int s1, int m2, int s2)
 {
     int tmp = TIME - (m2 - m1) * 60 - (s2 - s1);
     Sleep(10);
@@ -26,7 +26,7 @@ void calcTime(int &TIME, int m1, int s1, int m2, int s2, int n)
         TIME = -1;
 }
 
-void printInfo(Player player, int Swap, int Hint)
+void printInfo(Player player, int Swap, int Hint, int Point)
 {
     gotoxy(0,1);
     cout << "Hello ";
@@ -46,9 +46,15 @@ void printInfo(Player player, int Swap, int Hint)
     cout << Hint;
     TextColor(7);
 
+    doTab(1);
+    cout << "Your Point: ";
+    TextColor(3);
+    cout << Point;
+    TextColor(7);
+
 }
 
-void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200],int &Swap, int &Hint, int &TIME, const int m1, const int s1, const int choosenLevel)
+void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200],int &Swap, int &Hint, int &TIME, const int m1, const int s1, int &Point, const int choosenLevel)
 {
     int X[2], Y[2], cnt = 0;
     bool isSlide = true;
@@ -63,7 +69,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
         m2 = t->tm_min;
         s2 = t->tm_sec;
 
-        calcTime(TIME, m1, s1, m2, s2,n);
+        calcTime(TIME, m1, s1, m2, s2);
 
         if (TIME == -1)
             return;
@@ -105,6 +111,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                     Swap = 0;
                     continue;
                 }
+                Point -= 10;
                 unSelect(n, m, ate, selected); // Neu player da chon 1 o ma bam R thi se bug, nen neu bam R thi thao select het
                 refreshArray(n, m, C, view, ate);
                 printBoard(n, m, 2, view, pic, movingOn, selected, cpy);
@@ -128,6 +135,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                     Hint = 0;
                     continue;
                 }
+                Point -= 10;
                 unSelect(n, m, ate, selected);
                 for (int i = 1; i <= n; i++)
                     for (int j = 1; j <= m; j++)
@@ -179,11 +187,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                     {
                         if (isSlide)
                         {
-                            int tmp = rand() % 4 + 1;;
-                            if(choosenLevel==2)
-                                tmp = 4;
-                            if(choosenLevel==3)
-                                tmp = 1;
+                            int tmp = min(4,choosenLevel);
                             if (tmp == 1)
                                 doSlideUp(y1, x1, y2, x2, n, m, C, view, ate);
                             if (tmp == 2)
@@ -198,6 +202,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                             setAte(y1, x1, C, view, ate);
                             setAte(y2, x2, C, view, ate);
                         }
+                        Point += 5;
                     }
                     else
                     {
@@ -207,6 +212,7 @@ void move(int n, int m, int &y, int &x, char C[200][200], char view[200][200], c
                                     selected[i][j] = false;
 
                         printBoard(n, m, 1, view, pic, movingOn, selected, cpy);
+                        Point --;
                         Sleep(300);
                     }
                     unSelect(n, m, ate, selected);
@@ -226,7 +232,7 @@ void choiceLevel(Player player);
 
 void process(int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200], Player &player, const int choosenLevel)
 {
-    int x = 0, y = 0, TIME = 300 - choosenLevel * 30, Swap = 6 - choosenLevel, Hint = 6 - choosenLevel;
+    int x = 0, y = 0, TIME = 300 - choosenLevel * 30, Swap = 6 - choosenLevel, Hint = 6 - choosenLevel, Point = (Swap + Hint) * 10;
 
     if (choosenLevel == 5)
     {
@@ -241,25 +247,30 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
     m1 = t->tm_min;
     s1 = t->tm_sec;
 
-    printInfo(player,Swap,Hint);
+    printInfo(player,Swap,Hint,Point);
     memset(movingOn, false, sizeof(movingOn));
     movingOn[y][x] = true;
     printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
 
     while (!checkEnd(n, m, ate))
     {
+        bool swapped = false;
         while (cantMove(n, m, C, view, pic, ate, movingOn, selected, cpy))
         {
+            swapped = true;
             refreshArray(n, m, C, view, ate);
             printBoard(n, m, 2, view, pic, movingOn, selected, cpy);
         }
-        move(n, m, y, x, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, m1, s1, choosenLevel);
+        if(swapped)
+            printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
+        move(n, m, y, x, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, m1, s1,Point, choosenLevel);
         movingOn[y][x] = false;
-        printInfo(player,Swap,Hint);
+        printInfo(player,Swap,Hint,Point);
         if (TIME == -1)
             break;
     }
 
+    Point -= max(0, ((t->tm_min - m1) * 60 + (t->tm_sec - s1))/5); // 5 giay mat 1 point
     memset(movingOn, false, sizeof(movingOn));
     printBoard(n, m, 0, view, pic, movingOn, selected, cpy);
     Sleep(1234);
@@ -269,7 +280,11 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
         if (choosenLevel == player.level)
             player.level++;
         player.level = min(player.level, 5);
-        cout << "GAME OVER!";
+        cout << "Congratulation!! You got ";
+        TextColor(3);
+        cout << Point << endl;
+        TextColor(7);
+        cout << "point!\nGAME OVER!";
     }
     else
     {
@@ -277,7 +292,7 @@ void process(int n, int m, char C[200][200], char view[200][200], char pic[200][
         cout << "You are looser!";
         TextColor(7);
     }
-    Sleep(1234);
+    Sleep(4321);
     system("cls");
     
     updateFile(player);
