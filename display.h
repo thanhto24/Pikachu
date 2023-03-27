@@ -11,7 +11,7 @@ void printBoard(int n, int m, int type, char view[200][200], char pic[200][200],
     // Note: & là viền ngoài map, $ là đã bị ăn, @ là phần trong của ô, + là giao điểm, % là gợi ý
 
     // system("cls");
-    gotoxy(0,(20-n)/2-4); // Them hang nay de no ko bi giat
+    gotoxy(0,max(3,(20-n)/2-4)); // lui xuong theo y
     for (int i = 0; i <= n * hei - (n - 2); i++)
     {
         for (int j = 0; j <= m * wid - (m - 2); j++)
@@ -76,7 +76,7 @@ void printBoard(int n, int m, int type, char view[200][200], char pic[200][200],
                     cout <<  view[i][j];
                 else
                 {
-                    TextColor(10);
+                    TextColor((n+m)%15+1);
                     cout <<  pic[i][j];
                     TextColor(7);
                 }
@@ -102,14 +102,14 @@ void printBoard(int n, int m, int type, char view[200][200], char pic[200][200],
                         cout <<  (char)47;
                     else
                     {
-                        TextColor(10);
+                        TextColor((n+m)%15+1);
                         cout <<  pic[i][j];
                         TextColor(7);
                     }
                 }
                 else if (view[i][j] == '$')
                 {
-                    TextColor(10);
+                    TextColor((n+m)%15+1);
                     cout <<  pic[i][j];
                     TextColor(7);
                 } // Them o day de ve cai vien trai va duoi

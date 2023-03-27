@@ -8,7 +8,7 @@ void printLogin()
     //Doc thong tin tu file
     Player player,tmp;
     player.maxScore = player.level = -1;
-    cout <<  "Type your account information to login:\n";
+    cout <<  "Type your account information to login!\n";
     bool sucess = false;
 
     cout <<  "Username: ";
@@ -17,11 +17,22 @@ void printLogin()
     cout <<  "Password: ";
     char ch;
     string pass = "";
-    int x = 1;
-    while((ch = _getch()) != 13)
+    int x = 1, dem = 0;
+    while((ch = _getch()) != 13 && ch != ' ')
     {
+        dem++;
+        if(ch == 8 && pass.size()>0)
+            pass.erase(pass.begin()+pass.size()-1);
+        else
+        if(ch != 8 )
         pass += ch;
-        cout <<  '*';
+        gotoxy(0,2);
+        cout <<  "Password: ";
+        for(int i = 0; i < pass.size(); i++)
+            cout << '*';
+        for(int i = pass.size(); i <= dem; i++)
+            cout << ' ';
+        cout << endl;
     }
     strcpy(player.password,pass.c_str());
 
@@ -74,21 +85,19 @@ void printLogin()
         {
             player.level = tmp.level;
             player.maxScore = tmp.maxScore;
-            cout <<  "Dang nhap thanh cong!";
-            Sleep(2000);
-            sucess = true;
-            break;
+            fin.close();
+
+            cout <<  "Dang nhap thanh cong!\nPress any key to continue\n";
+
+            ch = _getch();
+            choiceLevel(player);
+            return;
         }   
     }
-    fin.close();
     if(!sucess)
     {
-        cout << "Thong tin khong hop le!";
-        Sleep(2000);
-        cin >> ch; // Nếu user ngứa tay bấm lung tung sẽ k bị sai
+        cout << "Thong tin khong hop le!\nPress any key to login again\n";
+        ch = _getch();
         printLogin();
     }
-    else
-        choiceLevel(player);
-    return;
 }

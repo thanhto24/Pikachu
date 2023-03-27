@@ -14,11 +14,13 @@ void printCredit();
 
 void displayMenu(int &n, int &m)
 {
+    system("cls");
     const int heii = 5, widd = 7;
     // char pic[heii * hei - (heii)+1][widd * wid - (widd - 2) - 7+1];
     char pic[200][200];
     gotoxy(0,5);
     makePic(heii,widd,pic,0);
+    TextColor(14);
     for(int i = 0; i <= heii * hei - (heii); i++)
     {
         for(int j = 0; j <= widd * wid - (widd - 2) - 7; j++)
@@ -29,6 +31,7 @@ void displayMenu(int &n, int &m)
         }
         cout <<  endl;
     }
+    TextColor(7);
     cout <<  endl;
     int choice = 0;
     menuMove(choice);

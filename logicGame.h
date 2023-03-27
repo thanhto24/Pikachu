@@ -49,7 +49,7 @@ bool bfs(int y1, int x1, int y2, int x2, int n, int m, bool type, bool ate[200][
         {
             int y = u.f + dy[i];
             int x = u.s + dx[i];
-            while (x >= 0 && x <= n + 1 && y >= 0 && y <= m + 1 && graph[y][x] == 0)
+            while (x >= 0 && x <= m + 1 && y >= 0 && y <= n + 1 && graph[y][x] == 0)
             {
                 if (trace[y][x] == mp(-1, -1))
                 {
@@ -84,30 +84,30 @@ bool bfs(int y1, int x1, int y2, int x2, int n, int m, bool type, bool ate[200][
     return true;
 }
 
-bool checkUup(int y1, int x1, int y2, int x2, int n, int m, bool type, char C[200][200], char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
-{
-    for (int i = y1 - 1; i > 0; i--)
-        if (C[i][x1] != '0')
-            return false;
+// bool checkUup(int y1, int x1, int y2, int x2, int n, int m, bool type, char C[200][200], char view[200][200], char pic[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
+// {
+//     for (int i = y1 - 1; i > 0; i--)
+//         if (C[i][x1] != '0')
+//             return false;
 
-    for (int i = y2 - 1; i > 0; i--)
-        if (C[i][x2] != '0')
-            return false;
+//     for (int i = y2 - 1; i > 0; i--)
+//         if (C[i][x2] != '0')
+//             return false;
 
-    if (!type)
-        return true;
+//     if (!type)
+//         return true;
 
-    vector<ii> route;
+//     vector<ii> route;
 
-    route.push_back(mp(y1, x1));
-    route.push_back(mp(0, x1));
-    route.push_back(mp(0, x2));
-    route.push_back(mp(y2, x2));
+//     route.push_back(mp(y1, x1));
+//     route.push_back(mp(0, x1));
+//     route.push_back(mp(0, x2));
+//     route.push_back(mp(y2, x2));
 
-    drawLine(n, m, view, pic, movingOn, selected, route, cpy);
+//     drawLine(n, m, view, pic, movingOn, selected, route, cpy);
 
-    return true;
-}
+//     return true;
+// }
 
 bool finalCheck(int y1, int x1, int y2, int x2, int n, int m, bool type, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200])
 {
@@ -115,7 +115,10 @@ bool finalCheck(int y1, int x1, int y2, int x2, int n, int m, bool type, char C[
         return false;
     if (C[y1][x1] != C[y2][x2])
         return false;
-    if (bfs(y1, x1, y2, x2, n, m, type, ate, view, pic, movingOn, selected, cpy))
-        return true;
-    return checkUup(y1, x1, y2, x2, n, m, type, C, view, pic, movingOn, selected, cpy);
+
+    // if (bfs(y1, x1, y2, x2, n, m, type, ate, view, pic, movingOn, selected, cpy))
+    //     return true;
+    // return checkUup(y1, x1, y2, x2, n, m, type, C, view, pic, movingOn, selected, cpy);
+
+    return bfs(y1, x1, y2, x2, n, m, type, ate, view, pic, movingOn, selected, cpy);
 }

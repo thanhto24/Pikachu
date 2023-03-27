@@ -3,8 +3,8 @@
 #include <windows.h>
 #include <conio.h>
 #include <fstream>
-#define ppc(a,n,m) a = new char * [n]; for(int i = 0; i < m; i++) a[i] = new char [m]
-#define ppb(a,n,m) a = new bool * [n]; for(int i = 0; i < m; i++) a[i] = new bool [m]
+#define ppc(a,n,m) a = new char * [n]; for(int i = 0; i < n; i++) a[i] = new char [m]
+#define ppb(a,n,m) a = new bool * [n]; for(int i = 0; i < n; i++) a[i] = new bool [m]
 #define ii pair<int, int>
 #define f first
 #define s second 

@@ -30,8 +30,9 @@ void printSignUp()
     Player dangky;
     string pass ="";
     char ch;
+    int dem = 0;
     dangky.maxScore = -1;
-    dangky.level = -1;
+    dangky.level = 1;
     cout <<  "Type your account information to sign up:\n";
 
     cout <<  "Username: ";
@@ -48,10 +49,21 @@ void printSignUp()
         
     cout <<  "\nPassword: ";
 
-    while((ch = _getch()) != 13)
+    while((ch = _getch()) != 13 && ch != ' ')
     {
+        dem++;
+        if(ch == 8 && pass.size()>0)
+            pass.erase(pass.begin()+pass.size()-1);
+        else
+        if(ch != 8 )
         pass += ch;
-        cout <<  '*';
+        gotoxy(0,3);
+        cout <<  "Password: ";
+        for(int i = 0; i < pass.size(); i++)
+            cout << '*';
+        for(int i = pass.size(); i <= dem; i++)
+            cout << ' ';
+        cout << endl;
     }
     strcpy(dangky.password,pass.c_str());
 
@@ -106,7 +118,6 @@ void printSignUp()
     cout <<  "\nSign up sucessfully!\nPress any key to back to menu!";
     
     ch = _getch();
-    system("cls");
     int tmp = 0;
     displayMenu(tmp,tmp);
 }

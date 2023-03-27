@@ -12,9 +12,9 @@ void init(int &n, int &m, char C[200][200], char view[200][200])
         x = 65 + rand() % (90 - 65 + 1);
         for (int i = 1; i <= 2; i++)
         {
-            int pos = rand() % (n * n);
+            int pos = rand() % (n * m);
             while (was[pos])
-                pos = rand() % (n * n);
+                pos = rand() % (n * m);
             was[pos] = true;
             c[pos] = (char)(x);
         }

@@ -15,9 +15,9 @@ bool cantMove(int n, int m, char C[200][200], char view[200][200], char pic[200]
                     if (!ate[i][j] && !ate[k][l]) // Nếu 2 ô chưa đi
                         if (finalCheck(i, j, k, l, n, m, 0, C, view, pic, ate, movingOn, selected, cpy))
                         {
-                            TextColor(4);
-                            cout <<  i << " " << j << "   " << k << " " << l << endl; // Turn on to cheat
-                            TextColor(7);
+                            // TextColor(4);
+                            // cout <<  i << " " << j << "   " << k << " " << l << endl; // Turn on to cheat
+                            // TextColor(7);
                             // Sleep(500);
                             return false;
                         }
