@@ -1,3 +1,4 @@
+#pragma once
 #include "header.h"
 #include "player.h"
 
@@ -265,7 +266,12 @@ void process(int hei, int wid,int n, int m, char C[200][200], char view[200][200
             printBoard(hei,wid,n, m, 2, view, pic, movingOn, selected, cpy);
         }
         if(swapped)
+        {
+            movingOn[y][x] = true;
             printBoard(hei,wid,n, m, 0, view, pic, movingOn, selected, cpy);
+            movingOn[y][x] = false;
+            Sleep(300);
+        }
         move(hei,wid,n, m, y, x, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, m1, s1,Point, choosenLevel);
         movingOn[y][x] = false;
         printInfo(player,Swap,Hint,Point);
@@ -274,7 +280,6 @@ void process(int hei, int wid,int n, int m, char C[200][200], char view[200][200
     }
 
     Point -= max(0, ((t->tm_min - m1) * 60 + (t->tm_sec - s1))/2); // 2 giay mat 1 point
-    player.maxScore = 0;
 
     memset(movingOn, false, sizeof(movingOn));
     printBoard(hei, wid,n, m, 0, view, pic, movingOn, selected, cpy);
@@ -285,15 +290,19 @@ void process(int hei, int wid,int n, int m, char C[200][200], char view[200][200
     if (TIME != -1)
     {
         if (choosenLevel == player.level)
-            player.level++;
-        player.level = min(player.level, 5);
-        if(choosenLevel==4)
+        {
             player.maxScore = Point;
+            player.level++;
+        }
+
+        player.level = min(player.level, 5);
+        
         cout << "Congratulation!! You got: ";
         TextColor(3);
         cout << Point;
         TextColor(7);
         cout << " point!\nGAME OVER!\n";
+        updateFile(player);
     }
     else
     {
@@ -311,7 +320,6 @@ void process(int hei, int wid,int n, int m, char C[200][200], char view[200][200
 
     system("cls");
     
-    updateFile(player);
     choiceLevel(player);
 }
 
@@ -328,8 +336,11 @@ void updateFile(Player player)
             break;
         if (strcmp(tmp.username, player.username) == 0 && strcmp(tmp.password, player.password) == 0)
         {
-            tmp.level = player.level;
-            tmp.maxScore = max(player.maxScore, tmp.maxScore);
+            if(tmp.level+1==player.level)
+            {
+                tmp.maxScore = player.maxScore;
+            }
+            tmp.level = max(player.level, tmp.level);
         }
         adj.push_back(tmp);
     }

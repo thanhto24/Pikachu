@@ -44,8 +44,10 @@ void choiceLevel(Player player)
     {
         if (i + 1 > player.level)
             TextColor(4);
-        if (i >= 4)
+        if (i == 4)
             TextColor(7);
+        if(i==5)
+            TextColor(6);
         cout << levelName[i] << endl;
         TextColor(7);
     }
@@ -80,7 +82,7 @@ void choiceLevel(Player player)
                 if (x == 5)
                 {
                     system("cls");
-                    displayMenu(x, x);
+                    displayMenu();
                     exit(0);
                 }
                 if (x == 4)

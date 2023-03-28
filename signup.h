@@ -1,8 +1,9 @@
 #pragma pack(1)
 #include "header.h"
 #include "player.h"
+#include "login.h"
 
-void displayMenu(int  &n, int &m);
+void displayMenu();
 
 bool neverExist(char S[])
 {
@@ -31,8 +32,8 @@ void printSignUp()
     string pass ="";
     char ch;
     int dem = 0;
-    dangky.maxScore = -1;
     dangky.level = 1;
+    dangky.maxScore = 0;
 
     TextColor(5);
     cout <<  "Type your account information to sign up:\n";
@@ -118,10 +119,12 @@ void printSignUp()
     fout.close();
 
     TextColor(6);
-    cout <<  "\nSign up sucessfully!\nPress any key to back to menu!\n";
+    cout <<  "\nSign up sucessfully!\nPress L to Login or others key to back to menu!\n";
     TextColor(7);
     
     ch = _getch();
-    int tmp = 0;
-    displayMenu(tmp,tmp);
+    if(toupper(ch)=='L')
+        printLogin();
+    else
+    displayMenu();
 }

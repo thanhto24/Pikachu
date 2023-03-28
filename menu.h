@@ -13,7 +13,7 @@ void printHighScore();
 void printCredit();
 
 
-void displayMenu(int &n, int &m)
+void displayMenu()
 {
     system("cls");
     const int heii = 5, widd = 7;
@@ -180,7 +180,7 @@ void printHelp()
 
 bool cmp(Player a, Player b)
 {
-    return a.maxScore > b.maxScore;
+    return a.level > b.level || ( a.level == b. level ) && (a.maxScore > b.maxScore);
 }
 
 void printHighScore()
@@ -197,10 +197,7 @@ void printHighScore()
         fin.read((char *) &(tmp), sizeof(Player));
         if(fin.eof())
             break;
-        if(tmp.level == 5)
-            topPlayer.push_back(tmp);
-        if(topPlayer.size()==5)
-            break;
+        topPlayer.push_back(tmp);
     }
     fin.close();
 
@@ -212,11 +209,28 @@ void printHighScore()
     cout << "TOP HIGHEST SCORE PLAYER\n\n";
     for(int i = 0; i < topPlayer.size(); i++)
     {
+        if(topPlayer[i].level - 1 == 0)
+            break;
         doTab(10);
         cout << topPlayer[i].username;
         for(int j = 0; j < 30 - strlen(topPlayer[i].username); j++)
             cout << '.';
-        cout << topPlayer[i].maxScore << endl << endl;
+
+        cout << topPlayer[i].maxScore;
+
+        int dem = 0;
+        if(!topPlayer[i].maxScore)
+            dem++;
+
+        while(topPlayer[i].maxScore > 0)
+        {
+            topPlayer[i].maxScore /= 10;
+            dem++;
+        }
+
+        for(int j = 0; j < 6 - dem; j++)
+            cout << ' ';
+        cout << " ( Level: " << topPlayer[i].level - 1 << " )\n\n";
     }
 
     TextColor(6);
@@ -225,8 +239,7 @@ void printHighScore()
     
     char ch;
     ch = _getch();
-    int x = 0;
-    displayMenu(x,x);
+    displayMenu();
 }
 
 void printCredit()
