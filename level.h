@@ -92,9 +92,7 @@ void choiceLevel(Player player)
                         cout << "Input heigth and width: ";
                         int h, w;
                         cin >> h >> w;
-                        if (h > 20 || w > 20)
-                            cout << "Data error, please input heigth and width smaller than 20\n";
-                        else if (h <= 0 || w <= 0)
+                        if (h <= 0 || w <= 0)
                             cout << "Data error, please input heigth and width greater than 0\n";
                         else
                         {
@@ -123,8 +121,8 @@ void choiceLevel(Player player)
 
                             char ch;
                             ch = _getch();
-                            if(h>19)
-                                makeLevel(3, 9, h, w, x + 1, player);
+                            if(h>8||w>16)
+                                makeLevel((40/h)/2*2+1, (160/w)/2*2+1, h, w, x + 1, player);
                             else
                                 makeLevel(5, 11, h, w, x + 1, player);
                             return;

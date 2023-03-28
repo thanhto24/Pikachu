@@ -41,6 +41,17 @@ void printSignUp()
 
     cout <<  "Username: ";
     gets(dangky.username);
+
+    if(strlen(dangky.username)==0)
+    {
+        TextColor(4);
+        cout <<  "Username length must be greater than 3! Try another\n";
+        Sleep(1500);
+        TextColor(7);
+        printSignUp();
+        return;
+    }
+
     if(!neverExist(dangky.username))
     {
         TextColor(4);
@@ -52,7 +63,7 @@ void printSignUp()
     }
         
     cout <<  "\nPassword: ";
-
+   
     while((ch = _getch()) != 13 && ch != ' ')
     {
         dem++;
@@ -69,6 +80,8 @@ void printSignUp()
             cout << ' ';
         cout << endl;
     }
+
+        
     strcpy(dangky.password,pass.c_str());
 
     int x = 1;

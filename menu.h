@@ -12,7 +12,7 @@ void printHelp();
 void printHighScore();
 void printCredit();
 
-
+                                                                                                                                                                                                                                                                                                                                  
 void displayMenu()
 {
     system("cls");

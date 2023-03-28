@@ -6,6 +6,7 @@
 
 bool getSaveFile(Player &player);
 void displayMenu();
+void choiceLevel(Player player);
 
 void printLogin()
 {
