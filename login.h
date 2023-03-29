@@ -1,12 +1,6 @@
-#pragma once
-#pragma pack(1) 
+#pragma pack(1)
 #include "header.h"
 #include "player.h"
-#include "saveFile.h"
-
-bool getSaveFile(Player &player);
-void displayMenu();
-void choiceLevel(Player player);
 
 void printLogin()
 {
@@ -84,8 +78,6 @@ void printLogin()
     }
 
     bool existUsername = false;
-    player.level = 1;
-    player.maxScore = 0;
 
     ifstream fin;
     fin.open("account\\account.dat", ios::binary);
@@ -101,24 +93,18 @@ void printLogin()
             {
                 player.level = tmp.level;
                 player.maxScore = tmp.maxScore;
-
                 fin.close();
 
                 TextColor(6);
-
-                if(getSaveFile(player))
-                    cout << "Loaded savefile!" << endl;
                 cout << "Login successfully!\nPress any key to continue\n";
                 TextColor(7);
 
                 ch = _getch();
                 choiceLevel(player);
-                fin.close();
                 return;
             }
         }   
     }
-    fin.close();
     if(!sucess)
     {
         TextColor(4);
@@ -127,12 +113,9 @@ void printLogin()
         else
             cout << "Your username is not exist!";
         TextColor(6);
-        cout << "\nPress B to back to Menu or others key to login again\n";
+        cout << "\nPress any key to login again\n";
         TextColor(7);
         ch = _getch();
-        if(toupper(ch) == 'B')
-            displayMenu();
-        else
         printLogin();
     }
 }

@@ -1,8 +1,5 @@
-#pragma once
 #include "header.h"
 #include "player.h"
-#include "menu.h"
-#include "level.h"
 
 void unSelect(int n, int m, bool ate[200][200], bool selected[200][200])
 {
@@ -12,40 +9,26 @@ void unSelect(int n, int m, bool ate[200][200], bool selected[200][200])
                 selected[i][j] = false;
 }
 
-void calcTime(const int TIME, int &timeLeft, int &prevTime, int m1, int s1, int m2, int s2, int &Point)
+void calcTime(int &TIME, int m1, int s1, int m2, int s2)
 {
-    timeLeft = TIME - (m2 - m1) * 60 - (s2 - s1);
-    if (timeLeft >= 0)
+    int tmp = TIME - (m2 - m1) * 60 - (s2 - s1);
+    Sleep(10);
+    if (tmp >= 0)
     {
-        if (prevTime != timeLeft)
-        {
-            gotoxy(0, 2);
-
-            if (timeLeft <= 30)
-                TextColor(4);
-
-            cout << "Time left: ";
-            cout << setw(2) << setfill('0') << timeLeft / 60 << " : " << setw(2) << setfill('0') << timeLeft % 60;
-            TextColor(7);
-
-            doTab(1);
-
-            if(timeLeft&1)
-                Point--; // 2 giay mat 1 diem, de neu dung help hoac swap kho bi phat hien
-            cout << "Your Point: ";
-            TextColor(3);
-            cout << Point << "   " << endl;
-            TextColor(7);
-        }
-        prevTime = timeLeft;
+        gotoxy(0, 2);
+        if (tmp <= 30)
+            TextColor(4);
+        cout << "Time left: ";
+        cout << setw(2) << setfill('0') << tmp / 60 << " : " << setw(2) << setfill('0') << tmp % 60 << endl;
+        TextColor(7);
     }
     else
-        timeLeft = -1;
+        TIME = -1;
 }
 
-void printInfo(Player player, int Swap, int Hint)
+void printInfo(Player player, int Swap, int Hint, int Point)
 {
-    gotoxy(0, 1);
+    gotoxy(0,1);
     cout << "Hello ";
     TextColor(1);
     cout << player.username;
@@ -63,16 +46,17 @@ void printInfo(Player player, int Swap, int Hint)
     cout << Hint;
     TextColor(7);
 
-    doTab(2);
-    TextColor(4);
-    cout << "Double press Backspace button to Back to menu!";
+    doTab(1);
+    cout << "Your Point: ";
+    TextColor(3);
+    cout << Point;
     TextColor(7);
+
 }
 
-void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200], int &Swap, int &Hint, const int TIME, int &timeLeft, const int m1, const int s1, int &Point, const int choosenLevel)
+void move(int hei, int wid, int n, int m, int &y, int &x, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200],int &Swap, int &Hint, int &TIME, const int m1, const int s1, int &Point, const int choosenLevel)
 {
     int X[2], Y[2], cnt = 0;
-    int prevTime = timeLeft;
     bool isSlide = true;
     // select va  movingOn chay tu 0 den n - 1
     while (true)
@@ -83,20 +67,14 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
         m2 = t->tm_min;
         s2 = t->tm_sec;
 
-        calcTime(TIME, timeLeft, prevTime, m1, s1, m2, s2, Point);
+        calcTime(TIME, m1, s1, m2, s2);
 
         if (TIME == -1)
             return;
 
         if (kbhit()) // Kiểm tra xem có bấm phím kg
         {
-            char key = getch(), prevKey; // Lấy ký tự người dùng vừa bấm
-
-            if(key == prevKey && prevKey == 8)
-            {
-                stop = true;
-                return;                
-            }
+            char key = getch(); // Lấy ký tự người dùng vừa bấm
 
             if (toupper(key) == 'A' || key == 75) // Di chuyển trái
             {
@@ -126,7 +104,7 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
             if (toupper(key) == 'R')
             {
                 Swap--;
-                if (Swap < 0)
+                if(Swap<0)
                 {
                     Swap = 0;
                     continue;
@@ -140,7 +118,7 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
                 movingOn[y][x] = true;
                 printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
                 movingOn[y][x] = false;
-
+                
                 return;
             }
 
@@ -155,7 +133,7 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
             if (key == '!')
             {
                 Hint--;
-                if (Hint < 0)
+                if(Hint<0)
                 {
                     Hint = 0;
                     continue;
@@ -167,11 +145,11 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
                         for (int k = 1; k <= n; k++)
                             for (int l = 1; l <= m; l++)
                                 if (!ate[i][j] && !ate[k][l]) // Nếu 2 ô chưa đi
-                                    if (finalCheck(hei, wid, i, j, k, l, n, m, 0, C, view, pic, ate, movingOn, selected, cpy))
+                                    if (finalCheck(hei,wid,i, j, k, l, n, m, 0, C, view, pic, ate, movingOn, selected, cpy))
                                     {
                                         setHint(hei, wid, i, j, view);
                                         setHint(hei, wid, k, l, view);
-                                        printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
+                                        printBoard(hei, wid,n, m, 0, view, pic, movingOn, selected, cpy);
                                         Sleep(300);
 
                                         movingOn[y][x] = true;
@@ -208,11 +186,11 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
                         swap(y1, y2);
                     }
 
-                    if (finalCheck(hei, wid, y1, x1, y2, x2, n, m, 1, C, view, pic, ate, movingOn, selected, cpy))
+                    if (finalCheck(hei,wid,y1, x1, y2, x2, n, m, 1, C, view, pic, ate, movingOn, selected, cpy))
                     {
                         if (isSlide)
                         {
-                            int tmp = min(4, choosenLevel);
+                            int tmp = min(4,choosenLevel);
                             if (tmp == 1)
                                 doSlideUp(hei, wid, y1, x1, y2, x2, n, m, C, view, ate);
                             if (tmp == 2)
@@ -237,7 +215,7 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
                                     selected[i][j] = false;
 
                         printBoard(hei, wid, n, m, 1, view, pic, movingOn, selected, cpy);
-                        Point--;
+                        Point --;
                         Sleep(300);
                     }
                     unSelect(n, m, ate, selected);
@@ -248,7 +226,6 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
                 printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
                 cnt++;
             }
-            prevKey = key;
         }
     }
 }
@@ -256,16 +233,13 @@ void move(int hei, int wid, int n, int m, int &y, int &x, bool &stop, char C[200
 void updateFile(Player player);
 void choiceLevel(Player player);
 
-void process(int hei, int wid, int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200], Player &player, const int choosenLevel)
+void process(int hei, int wid,int n, int m, char C[200][200], char view[200][200], char pic[200][200], bool ate[200][200], bool movingOn[200][200], bool selected[200][200], char cpy[200][200], Player &player, const int choosenLevel)
 {
-    int x = 0, y = 0, Swap = 10 - choosenLevel, Hint = 10 - choosenLevel, Point = (Swap + Hint) * 100;
-    const int TIME = 600 - choosenLevel * 30;
-    int timeLeft = TIME;
-    bool stop = false;
+    int x = 0, y = 0, TIME = 600 - choosenLevel * 30, Swap = 10 - choosenLevel, Hint = 10 - choosenLevel, Point = (Swap + Hint) * 100;
 
     if (choosenLevel == 5)
     {
-        timeLeft = 3600;
+        TIME = 3600;
         Swap = 6666;
         Hint = 3333;
     }
@@ -276,7 +250,7 @@ void process(int hei, int wid, int n, int m, char C[200][200], char view[200][20
     m1 = t->tm_min;
     s1 = t->tm_sec;
 
-    printInfo(player, Swap, Hint);
+    printInfo(player,Swap,Hint,Point);
     memset(movingOn, false, sizeof(movingOn));
     movingOn[y][x] = true;
     printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
@@ -284,33 +258,26 @@ void process(int hei, int wid, int n, int m, char C[200][200], char view[200][20
     while (!checkEnd(n, m, ate))
     {
         bool swapped = false;
-        while (cantMove(hei, wid, n, m, C, view, pic, ate, movingOn, selected, cpy))
+        while (cantMove(hei,wid,n, m, C, view, pic, ate, movingOn, selected, cpy))
         {
             swapped = true;
-            refreshArray(hei, wid, n, m, C, view, ate);
-            printBoard(hei, wid, n, m, 2, view, pic, movingOn, selected, cpy);
+            refreshArray(hei, wid,n, m, C, view, ate);
+            printBoard(hei,wid,n, m, 2, view, pic, movingOn, selected, cpy);
         }
-        if (swapped)
-        {
-            movingOn[y][x] = true;
-            printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
-            movingOn[y][x] = false;
-            Sleep(300);
-        }
-        move(hei, wid, n, m, y, x,stop, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, timeLeft, m1, s1, Point, choosenLevel);
+        if(swapped)
+            printBoard(hei,wid,n, m, 0, view, pic, movingOn, selected, cpy);
+        move(hei,wid,n, m, y, x, C, view, pic, ate, movingOn, selected, cpy, Swap, Hint, TIME, m1, s1,Point, choosenLevel);
         movingOn[y][x] = false;
-        printInfo(player, Swap, Hint);
-        if(stop)
-        {
-            displayMenu();
-            return;
-        }
+        printInfo(player,Swap,Hint,Point);
         if (TIME == -1)
             break;
     }
 
+    Point -= max(0, ((t->tm_min - m1) * 60 + (t->tm_sec - s1))/2); // 2 giay mat 1 point
+    player.maxScore = 0;
+
     memset(movingOn, false, sizeof(movingOn));
-    printBoard(hei, wid, n, m, 0, view, pic, movingOn, selected, cpy);
+    printBoard(hei, wid,n, m, 0, view, pic, movingOn, selected, cpy);
 
     Sleep(1234);
     system("cls");
@@ -318,19 +285,15 @@ void process(int hei, int wid, int n, int m, char C[200][200], char view[200][20
     if (TIME != -1)
     {
         if (choosenLevel == player.level)
-        {
             player.level++;
-        }
-
-        player.maxScore = Point;
         player.level = min(player.level, 5);
-
+        if(choosenLevel==4)
+            player.maxScore = Point;
         cout << "Congratulation!! You got: ";
         TextColor(3);
         cout << Point;
         TextColor(7);
         cout << " point!\nGAME OVER!\n";
-        updateFile(player);
     }
     else
     {
@@ -340,14 +303,15 @@ void process(int hei, int wid, int n, int m, char C[200][200], char view[200][20
     }
 
     TextColor(6);
-    cout << "Press any key to continue!\n";
+    cout <<  "Press any key to continue!\n";
     TextColor(7);
 
     char ch;
     ch = _getch();
 
     system("cls");
-
+    
+    updateFile(player);
     choiceLevel(player);
 }
 
@@ -364,11 +328,8 @@ void updateFile(Player player)
             break;
         if (strcmp(tmp.username, player.username) == 0 && strcmp(tmp.password, player.password) == 0)
         {
-            if (tmp.level + 1 == player.level)
-            {
-                tmp.maxScore = player.maxScore;
-            }
-            tmp.level = max(player.level, tmp.level);
+            tmp.level = player.level;
+            tmp.maxScore = max(player.maxScore, tmp.maxScore);
         }
         adj.push_back(tmp);
     }

@@ -1,9 +1,8 @@
 #pragma pack(1)
 #include "header.h"
 #include "player.h"
-#include "login.h"
 
-void displayMenu();
+void displayMenu(int  &n, int &m);
 
 bool neverExist(char S[])
 {
@@ -32,8 +31,8 @@ void printSignUp()
     string pass ="";
     char ch;
     int dem = 0;
+    dangky.maxScore = -1;
     dangky.level = 1;
-    dangky.maxScore = 0;
 
     TextColor(5);
     cout <<  "Type your account information to sign up:\n";
@@ -41,17 +40,6 @@ void printSignUp()
 
     cout <<  "Username: ";
     gets(dangky.username);
-
-    if(strlen(dangky.username)==0)
-    {
-        TextColor(4);
-        cout <<  "Username length must be greater than 3! Try another\n";
-        Sleep(1500);
-        TextColor(7);
-        printSignUp();
-        return;
-    }
-
     if(!neverExist(dangky.username))
     {
         TextColor(4);
@@ -63,7 +51,7 @@ void printSignUp()
     }
         
     cout <<  "\nPassword: ";
-   
+
     while((ch = _getch()) != 13 && ch != ' ')
     {
         dem++;
@@ -80,8 +68,6 @@ void printSignUp()
             cout << ' ';
         cout << endl;
     }
-
-        
     strcpy(dangky.password,pass.c_str());
 
     int x = 1;
@@ -132,12 +118,10 @@ void printSignUp()
     fout.close();
 
     TextColor(6);
-    cout <<  "\nSign up sucessfully!\nPress L to Login or others key to back to menu!\n";
+    cout <<  "\nSign up sucessfully!\nPress any key to back to menu!\n";
     TextColor(7);
     
     ch = _getch();
-    if(toupper(ch)=='L')
-        printLogin();
-    else
-    displayMenu();
+    int tmp = 0;
+    displayMenu(tmp,tmp);
 }
