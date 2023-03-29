@@ -7,7 +7,7 @@ void makePic(int hei, int wid, int n, int m, char pic[200][200],int num)
     {
         for (int j = 0; j <= m * wid - (m - 2); j++)
         {
-            pic[i][j] = '.';
+            pic[i][j] = ' ';
         }
     }
     string picName = "picture\\pic";

@@ -19,7 +19,7 @@ void makeLevel(int hei, int wid, int n, int m, int choosenLevel, Player player)
     char view[200][200], pic[200][200], cpy[200][200];
     system("cls");
     init(hei, wid, n, m, C, view);
-    makePic(hei,wid,n, m, pic, 1);
+    makePic(hei,wid,n, m, pic, choosenLevel);
     process(hei, wid, n, m, C, view, pic, ate, movingOn, selected, cpy, player, choosenLevel);
 }
 
@@ -44,10 +44,8 @@ void choiceLevel(Player player)
     {
         if (i + 1 > player.level)
             TextColor(4);
-        if (i == 4)
+        if (i >= 4)
             TextColor(7);
-        if(i==5)
-            TextColor(6);
         cout << levelName[i] << endl;
         TextColor(7);
     }
@@ -82,7 +80,7 @@ void choiceLevel(Player player)
                 if (x == 5)
                 {
                     system("cls");
-                    displayMenu();
+                    displayMenu(x, x);
                     exit(0);
                 }
                 if (x == 4)
@@ -92,7 +90,9 @@ void choiceLevel(Player player)
                         cout << "Input heigth and width: ";
                         int h, w;
                         cin >> h >> w;
-                        if (h <= 0 || w <= 0)
+                        if (h > 20 || w > 20)
+                            cout << "Data error, please input heigth and width smaller than 20\n";
+                        else if (h <= 0 || w <= 0)
                             cout << "Data error, please input heigth and width greater than 0\n";
                         else
                         {
@@ -121,8 +121,8 @@ void choiceLevel(Player player)
 
                             char ch;
                             ch = _getch();
-                            if(h>8||w>16)
-                                makeLevel((40/h)/2*2+1, (160/w)/2*2+1, h, w, x + 1, player);
+                            if(h>19)
+                                makeLevel(3, 9, h, w, x + 1, player);
                             else
                                 makeLevel(5, 11, h, w, x + 1, player);
                             return;

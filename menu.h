@@ -12,8 +12,8 @@ void printHelp();
 void printHighScore();
 void printCredit();
 
-                                                                                                                                                                                                                                                                                                                                  
-void displayMenu()
+
+void displayMenu(int &n, int &m)
 {
     system("cls");
     const int heii = 5, widd = 7;
@@ -21,18 +21,18 @@ void displayMenu()
     char pic[200][200];
     gotoxy(0,5);
     makePic(5,11,heii,widd,pic,0);
-    TextColor(14);
+    TextColor(10);
     for(int i = 0; i <= heii * 5 - (heii); i++)
     {
-        for(int j = 0; j <= widd * 11 - (widd - 2) - 7; j++)
+        for(int j = 0; j <= widd * 15 - (widd - 2) - 6; j++)
         {
             if(j==0)
-                doTab(9);
+                doTab(7);
             cout <<  pic[i][j];
         }
         cout <<  endl;
     }
-    TextColor(7);
+    TextColor(14);
     cout <<  endl;
     int choice = 0;
     menuMove(choice);
@@ -125,6 +125,7 @@ void printHelp()
     cout <<  "Press A/S/D/W or arrows to move LEFT/DOWN/RIGHT/LEFT.\n";
     cout <<  "Press Enter to select the cell.\n";
     cout <<  "Press Z to undo, H for hint and R to swap all cells.\n";
+    cout <<  "Remember that you must finish each mode sequentially.\n";
     cout <<  "The less time you need to finish this game, the more high score you get.\n";
     cout <<  "That's all. Have fun and good luck!\n\n";
 
@@ -180,7 +181,7 @@ void printHelp()
 
 bool cmp(Player a, Player b)
 {
-    return a.level > b.level || ( a.level == b. level ) && (a.maxScore > b.maxScore);
+    return a.maxScore > b.maxScore;
 }
 
 void printHighScore()
@@ -197,7 +198,10 @@ void printHighScore()
         fin.read((char *) &(tmp), sizeof(Player));
         if(fin.eof())
             break;
-        topPlayer.push_back(tmp);
+        if(tmp.level == 5)
+            topPlayer.push_back(tmp);
+        if(topPlayer.size()==5)
+            break;
     }
     fin.close();
 
@@ -206,31 +210,15 @@ void printHighScore()
     gotoxy(0,5);
     doTab(11);
 
+    TextColor(10);
     cout << "TOP HIGHEST SCORE PLAYER\n\n";
     for(int i = 0; i < topPlayer.size(); i++)
     {
-        if(topPlayer[i].level - 1 == 0)
-            break;
         doTab(10);
         cout << topPlayer[i].username;
         for(int j = 0; j < 30 - strlen(topPlayer[i].username); j++)
             cout << '.';
-
-        cout << topPlayer[i].maxScore;
-
-        int dem = 0;
-        if(!topPlayer[i].maxScore)
-            dem++;
-
-        while(topPlayer[i].maxScore > 0)
-        {
-            topPlayer[i].maxScore /= 10;
-            dem++;
-        }
-
-        for(int j = 0; j < 6 - dem; j++)
-            cout << ' ';
-        cout << " ( Level: " << topPlayer[i].level - 1 << " )\n\n";
+        cout << topPlayer[i].maxScore << endl << endl;
     }
 
     TextColor(6);
@@ -239,10 +227,39 @@ void printHighScore()
     
     char ch;
     ch = _getch();
-    displayMenu();
+    int x = 0;
+    displayMenu(x,x);
 }
 
 void printCredit()
 {
-    cout <<  "Credit!";
+    TextColor(13);
+    cout << "*********************************************************************" << endl
+         << "*                          ~~ CREDIT ~~                             *" << endl
+         << "*              UNIVERSITY OF SCIENCE IN HOCHIMINH CITY              *" << endl;
+    TextColor(7);
+    cout << "*********************************************************************" << endl
+         << "*  * This program is coded by students from HCMUS:                  *" << endl
+         << "*       Dev 1: To Quoc Thanh.                                       *" << endl
+         << "*       Dev 2: Le Phuoc Phat.                                       *" << endl
+         << "*********************************************************************" << endl;
+    TextColor(10);
+    cout << "*  * Thanks all supporting and helping from our teachers:           *" << endl
+         << "*       Mr.Nguyen Thanh Phuong.                                     *" << endl
+         << "*       Mr.Bui Huy Thong.                                           *" << endl
+         << "*       Ms.Nguyen Ngoc Thao.                                        *" << endl
+         << "*********************************************************************" << endl;
+    TextColor(14);
+    cout << "*  PLEASE DONOT COPY OR USE OUR PROGRAM FOR ANY PURPOSES !!!        *" << endl
+         << "*  THANKS ALL FOR PLAYING !!! HAVE A GOOD TIME !!!                  *" << endl
+         << "*********************************************************************" << endl;
+
+    TextColor(6);
+    cout << "\nPress any key to back to menu!" << endl;
+    TextColor(7);
+    
+    char ch;
+    ch = _getch();
+    int x = 0;
+    displayMenu(x,x); 
 }

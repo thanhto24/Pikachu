@@ -22,7 +22,6 @@ bool bfs(int hei, int wid, int y1, int x1, int y2, int x2, int n, int m, bool ty
         for (int j = 0; j <= m + 1; j++)
         {
             trace[i][j] = mp(-1, -1);
-            graph[i][j] = 0;
         }
     }
 

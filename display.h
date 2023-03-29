@@ -23,7 +23,7 @@ void printBoard(int hei, int wid, int n, int m, int type, char view[200][200], c
         for (int j = 0; j <= m * wid - (m - 2); j++)
         {
             if (j == 0)
-                doTab(max(1, ((200 - (m*wid)) / 2))/8); // Cach ra xa khoi goc trai, vi man hinh co chieu dai khoang 160 dau cach = 20 tab nen co cong thuc tren
+                doTab(max(1, (20 - m) / 2)); // Cach ra xa khoi goc trai, vi man hinh co chieu dai khoang 20 tab nen co cong thuc tren
             if (type == 0)
                 TextColor(basicColor);
             if (type == 1)

@@ -14,7 +14,8 @@
 
 int main()
 {
+    int n, m;
     srand(time(0));
-    displayMenu();
+    displayMenu(n,m);
     return 0;
 }
